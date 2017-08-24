@@ -1,0 +1,30 @@
+{
+  "name": "slider-es6",
+  "version": "0.0.0",
+  "description": "Slider for Elena",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kprudnikov/slider-es6.git"
+  },
+  "author": "KPR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kprudnikov/slider-es6/issues"
+  },
+  "homepage": "https://github.com/kprudnikov/slider-es6#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.5",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "webpack": "^3.5.5"
+  }
+}

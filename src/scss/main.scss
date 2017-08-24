@@ -1,0 +1,18 @@
+$images: ('/img/slide-1.jpg',
+          '/img/slide-2.jpg',
+          '/img/slide-3.jpg',
+          '/img/slide-4.png',
+          '/img/slide-5.png');
+
+@each $image in $images {
+    $i: index($images, $image);
+
+    .slide:nth-child(#{$i}) {
+        background-image: url('#{$image}');
+    }
+}
+
+.slide {
+    background-repeat: no-repeat;
+    background-size: contain;
+}
