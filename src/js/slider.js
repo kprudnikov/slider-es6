@@ -42,26 +42,32 @@ export default class Swiper {
       threshold: 200, // px
       wrapperClass: 'swiper-wrapper',
       slidesClass: 'slide',
+      additionalSlides: 2,
+      beforeSlide: noop,
       afterSwipe: noop,
     };
 
     this._flags = {
       isSliding: false,
       isMouseDown: false,
-      initialOffset: parseInt(rootNode.style.left) || 0,
+      initialOffset: 0,
       slideWidth: 0,
+      slidesNumber: 0,
+      currentSlideIndex: 0,
     };
 
     this.rootNode = rootNode;
     this.config = Object.assign(defaultConfig, userConfig);
     this.config.speed = this.config.speed/1000 + 's';
     this.wrapperNode = rootNode.querySelector(`.${this.config.wrapperClass}`);
-    this._flags.slideWidth = rootNode.querySelector(`.${this.config.slidesClass}`).offsetWidth;
+    this.slides = rootNode.querySelectorAll(`.${this.config.slidesClass}`);
+    this._flags.slideWidth = this.slides[0].offsetWidth;
+    this._flags.slidesNumber = this.slides.length;
 
     this.rootNode.addEventListener('dragleft', this.onDragLeft.bind(this));
     this.rootNode.addEventListener('dragright', this.onDragRight.bind(this));
-    this.rootNode.addEventListener('touchstart', this.onSwipeStart.bind(this));
-    this.rootNode.addEventListener('mousedown', this.onSwipeStart.bind(this));
+    this.rootNode.addEventListener('touchstart', this.onTouchStart.bind(this));
+    this.rootNode.addEventListener('mousedown', this.onTouchStart.bind(this));
     this.rootNode.addEventListener('transitionend', () => {
       Swiper.resetTransition(this.wrapperNode);
       if (this._flags.isSliding) {
@@ -70,8 +76,8 @@ export default class Swiper {
       }
     });
 
-    body.addEventListener('touchend', this.onSwipeEnd.bind(this));
-    body.addEventListener('mouseup', this.onSwipeEnd.bind(this));
+    body.addEventListener('touchend', this.onTouchEnd.bind(this));
+    body.addEventListener('mouseup', this.onTouchEnd.bind(this));
   }
 
   onDragLeft (e) {
@@ -86,13 +92,13 @@ export default class Swiper {
     this.wrapperNode.style.left = `${currentPosition + e.detail.horizDelta}px`;
   }
 
-  onSwipeStart () {
+  onTouchStart () {
     this._flags.isMouseDown = true;
     Swiper.resetTransition(this.wrapperNode);
     this._flags.initialOffset = parseInt(this.wrapperNode.style.left) || 0;
   }
 
-  onSwipeEnd () {
+  onTouchEnd () {
     if (!this._flags.isMouseDown) return;
 
     this._flags.isMouseDown = false;
@@ -103,10 +109,20 @@ export default class Swiper {
     if (Math.abs(offset) < this.config.threshold) {
       this.wrapperNode.style.left = `${this._flags.initialOffset}px`;
     } else {
-      this._flags.initialOffset = offset > 0 ? this._flags.initialOffset + this._flags.slideWidth :
-        this._flags.initialOffset - this._flags.slideWidth;
+      const slidingLeft = offset < 0;
+      const slidingRight = offset > 0;
+      const slidingBeyondFirst = this._flags.initialOffset >= 0 && slidingRight;
+      const slidingBeyondLast = (Math.abs(this._flags.initialOffset) >=
+        this._flags.slideWidth * (this._flags.slidesNumber - 2) &&
+        Math.sign(this._flags.initialOffset) === -1 && slidingLeft);
+      
+      if (!(slidingBeyondFirst || slidingBeyondLast)) {
+        this._flags.initialOffset = offset > 0 ? this._flags.initialOffset + this._flags.slideWidth :
+          this._flags.initialOffset - this._flags.slideWidth;
+        this._flags.isSliding = true;
+        this.config.beforeSlide();
+      }
       this.wrapperNode.style.left = `${this._flags.initialOffset}px`;
-      this._flags.isSliding = true;
     }
   }
 
