@@ -12,7 +12,35 @@ $images: ('/img/slide-1.jpg',
     }
 }
 
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+.swiper {
+    //width: 1680px;
+    //height: 630px;
+    width: 100vw;
+    height:0;
+    padding-top: 37.5%;
+    cursor: -webkit-grab;
+    overflow: hidden;
+    position: relative;
+}
+
+.inner {
+    position: absolute;
+    width: 100vw * length($images);
+    height: 100%;
+    top: 0;
+}
+
 .slide {
+    width: 100vw;
+    height: 0;
+    padding-top: 37.5% / length($images) ;
+    float: left;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
 }

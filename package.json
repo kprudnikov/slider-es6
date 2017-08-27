@@ -4,7 +4,8 @@
   "description": "Slider for Elena",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && http-server dist/"
+    "start": "webpack && http-server dist/",
+    "dev": "webpack --watch & http-server dist/"
   },
   "repository": {
     "type": "git",
