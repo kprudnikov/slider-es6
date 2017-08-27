@@ -109,7 +109,7 @@ export default class Swiper {
       return;
     };
 
-    if (!(e.buttons === 1 || (typeof e.buttons === 'undefined' && e.type.match('touch')))) {
+    if (!(e.buttons === 1 || (typeof e.buttons === 'undefined' && e.type.match('touch'))) || e.ctrlKey) {
       this.onTouchEnd(e);
     } else {
       this._flags.isMouseDown = true;
