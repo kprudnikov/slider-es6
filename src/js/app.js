@@ -1,4 +1,5 @@
 import Swiper from './slider';
+require('../scss/main.scss');
 
 const swiperNodes = document.querySelectorAll('.swiper');
 window.Swiper = Swiper;
