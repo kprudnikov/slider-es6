@@ -57,11 +57,18 @@ export default class Swiper {
 
     this.rootNode = rootNode;
     this.config = Object.assign(defaultConfig, userConfig);
-    this.config.speed = this.config.speed/1000 + 's';
     this.wrapperNode = rootNode.querySelector(`.${this.config.wrapperClass}`);
     this.slides = Array.prototype.slice.call(rootNode.querySelectorAll(`.${this.config.slidesClass}`));
     this._flags.slideWidth = this.slides[0].offsetWidth;
     this._flags.slidesNumber = this.slides.length;
+    this.config.speed = this.config.speed/1000 + 's';
+    const isAdditionalSlidesOutOfRange = this.config.additionalSlides < 1 ||
+      this.config.additionalSlides > this._flags.slidesNumber;
+
+    if (isAdditionalSlidesOutOfRange) {
+      console.warn('Additional slides number must not be smaller than 1 or bigger than total slides number. Falling back to 2 additional slides.');
+      this.config.additionalSlides = 2;
+    }
 
     this.rootNode.addEventListener('dragleft', this.onDragLeft.bind(this));
     this.rootNode.addEventListener('dragright', this.onDragRight.bind(this));
