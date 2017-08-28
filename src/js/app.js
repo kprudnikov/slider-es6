@@ -2,7 +2,6 @@ import Swiper from './slider';
 require('../scss/main.scss');
 
 const swiperNodes = document.querySelectorAll('.swiper');
-window.Swiper = Swiper;
 Array.prototype.slice.call(swiperNodes).forEach((swiperNode) => {
     new Swiper(swiperNode, {
       speed: 500,
