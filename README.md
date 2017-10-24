@@ -37,3 +37,8 @@ __additionalSlides__: additionalnumber of slides before and after the main seque
 __beforeSwipe__: callback function (swiper) {}.
 
 __afterSwipe__: callback function (swiper) {}.
+
+
+### About:
+
+the purpose of this project is to demostrate ES2015 knowledge. No old browsers support etc.
